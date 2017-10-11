@@ -198,17 +198,16 @@ public class DeveloperDAO {
 	}
 	
 	
-	public static Developer removeDeveloper(String name, String surname) throws Exception{
-		Developer developer = getDeveloper(name, surname);
+	public static void removeDeveloper(String name, String surname) throws Exception{
 		Connection connection = null;
 		PreparedStatement statement = null;
 		ResultSet rSet = null;
+		Developer developer = getDeveloper(name, surname);
 		String sql = "SELECT * FROM developers where NameDevelopers=? and SurnameDevelopers=?;";
 		try{
 			connection = Connector.getConnector();
 			if(connection == null){
 				System.err.println("Method removeDeveloper. Connection is not established!");
-				return developer;
 			}
 			try {
 				statement = connection.prepareStatement(sql);
@@ -219,14 +218,11 @@ public class DeveloperDAO {
 					if(developer != null){
 						statement.executeUpdate("DELETE FROM developers WHERE namedevelopers='" + name + 
 								"' and surnamedevelopers='" + surname + "';");
-					}  else{
-					return null;
 					}
 				}
 			}
 			catch (SQLException e) {
 				System.err.println("Method removeDeveloper. SQL request isn't correct.");
-				return developer;
 			}
 		}
 		finally{
@@ -244,7 +240,6 @@ public class DeveloperDAO {
 				System.err.println("Method deleteDeveloper. Finally block isn't correct. Connections could be unclose!!!");
 			}
 		}
-		return developer;
 	}
 
 }
